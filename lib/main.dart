@@ -10,6 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Thiskrit Spaces', home: ThiskritSpacesScreen());
+    return MaterialApp(title: 'Thiskrit Spaces', home: SpacesScreen());
   }
 }

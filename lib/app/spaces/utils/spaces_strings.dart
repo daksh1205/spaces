@@ -21,7 +21,7 @@ abstract final class SpacesStrings {
 
   static const sheetTitle = 'Who can see this?';
   static const sheetSubtitle =
-      'Every Thiskrit post is shared with exactly who you want. Nobody more';
+      'Every ThisKrit post is shared with exactly who you want. Nobody more';
 
   static String memberCount(int count) => '$count people';
 

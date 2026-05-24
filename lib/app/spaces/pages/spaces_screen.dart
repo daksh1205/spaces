@@ -24,21 +24,21 @@ class _SpacesScreenState extends State<SpacesScreen> {
   static final List<SpaceItem> _spaces = [
     SpaceItem(
       name: 'Friends',
-      description: 'Close circle. Daily life, no filter.',
+      description: 'For the ones who get it.',
       memberCount: 12,
       icon: SvgPicture.asset(AppIcons.friends, height: 20),
       avatarSeeds: _seeds(),
     ),
     SpaceItem(
       name: 'Family',
-      description: 'Parents, siblings, in-laws.',
+      description: 'Relatives, relatives and relatives',
       memberCount: 7,
       icon: SvgPicture.asset(AppIcons.family, height: 20),
       avatarSeeds: _seeds(),
     ),
     SpaceItem(
       name: 'Work',
-      description: 'Colleagues. Professional context only.',
+      description: 'For the 9-to-5 crowd',
       memberCount: 24,
       icon: SvgPicture.asset(AppIcons.work, height: 20),
       avatarSeeds: _seeds(),
@@ -46,6 +46,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
   ];
 
   SpaceItem? _selectedSpace;
+  bool _isPosting = false;
 
   void _onSpaceSelected(int index) {
     setState(() => _selectedSpace = _spaces[index]);
@@ -59,6 +60,60 @@ class _SpacesScreenState extends State<SpacesScreen> {
           ? null
           : _spaces.indexOf(_selectedSpace!),
       onSpaceSelected: _onSpaceSelected,
+    );
+  }
+
+  Future<void> _onPost() async {
+    if (_selectedSpace == null || _isPosting) return;
+
+    final spaceName = _selectedSpace!.name;
+
+    setState(() => _isPosting = true);
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (!mounted) return;
+
+    setState(() => _isPosting = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            SvgPicture.asset(
+              AppIcons.check,
+              height: 24,
+              width: 24,
+              colorFilter: const ColorFilter.mode(
+                AppColors.white,
+                BlendMode.srcIn,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Posted to $spaceName',
+                style: AppTextStyles.monoSm.copyWith(color: AppColors.white),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+              child: SvgPicture.asset(
+                AppIcons.close,
+                height: 16,
+                width: 16,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: AppColors.brand,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
     );
   }
 
@@ -76,6 +131,8 @@ class _SpacesScreenState extends State<SpacesScreen> {
               PostCard(
                 selectedSpace: _selectedSpace,
                 onShareTap: _openSpacesSheet,
+                isPosting: _isPosting,
+                onPost: _onPost,
               ),
               const SizedBox(height: 16),
               _HelperText(selectedSpace: _selectedSpace),

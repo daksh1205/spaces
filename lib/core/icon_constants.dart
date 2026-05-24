@@ -8,4 +8,5 @@ class AppIcons {
   static const friends = 'assets/svg/friends.svg';
   static const family = 'assets/svg/family.svg';
   static const work = 'assets/svg/work.svg';
+  static const check = 'assets/svg/check.svg';
 }

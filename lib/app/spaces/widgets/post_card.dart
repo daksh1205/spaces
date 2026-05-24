@@ -15,10 +15,14 @@ class PostCard extends StatelessWidget {
     super.key,
     required this.selectedSpace,
     required this.onShareTap,
+    required this.isPosting,
+    required this.onPost,
   });
 
   final SpaceItem? selectedSpace;
   final VoidCallback onShareTap;
+  final bool isPosting;
+  final VoidCallback onPost;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +35,18 @@ class PostCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _PostCardHeader(selectedSpace: selectedSpace),
+          _PostCardHeader(selectedSpace: selectedSpace, onShareTap: onShareTap),
           _PostImage(selectedSpace: selectedSpace),
           _PostActions(),
           _PostCaption(),
           const SizedBox(height: 16),
-          _ShareButton(selectedSpace: selectedSpace, onTap: onShareTap),
-          const SizedBox(height: 16),
+          _ShareButton(
+            selectedSpace: selectedSpace,
+            onShareTap: onShareTap,
+            isPosting: isPosting,
+            onPost: onPost,
+          ),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -45,9 +54,13 @@ class PostCard extends StatelessWidget {
 }
 
 class _PostCardHeader extends StatelessWidget {
-  const _PostCardHeader({required this.selectedSpace});
+  const _PostCardHeader({
+    required this.selectedSpace,
+    required this.onShareTap,
+  });
 
   final SpaceItem? selectedSpace;
+  final VoidCallback onShareTap;
 
   @override
   Widget build(BuildContext context) {
@@ -84,24 +97,27 @@ class _PostCardHeader extends StatelessWidget {
               ],
             ),
           ),
-          AnimatedSwitcher(
-            duration: _kSwitchDuration,
-            child: selectedSpace != null
-                ? SpaceBadge(
-                    key: ValueKey(selectedSpace!.name),
-                    spaceName: selectedSpace!.name,
-                    avatarSeeds: selectedSpace!.avatarSeeds,
-                  )
-                : PillButton(
-                    key: const ValueKey('no-space'),
-                    child: const Text(
-                      'NO SPACE',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'JetBrainsMono',
+          GestureDetector(
+            onTap: onShareTap,
+            child: AnimatedSwitcher(
+              duration: _kSwitchDuration,
+              child: selectedSpace != null
+                  ? SpaceBadge(
+                      key: ValueKey(selectedSpace!.name),
+                      spaceName: selectedSpace!.name,
+                      avatarSeeds: selectedSpace!.avatarSeeds,
+                    )
+                  : PillButton(
+                      key: const ValueKey('no-space'),
+                      child: const Text(
+                        'NO SPACE',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'JetBrainsMono',
+                        ),
                       ),
                     ),
-                  ),
+            ),
           ),
         ],
       ),
@@ -185,53 +201,77 @@ class _PostCaption extends StatelessWidget {
 }
 
 class _ShareButton extends StatelessWidget {
-  const _ShareButton({required this.selectedSpace, required this.onTap});
+  const _ShareButton({
+    required this.selectedSpace,
+    required this.onShareTap,
+    required this.isPosting,
+    required this.onPost,
+  });
 
   final SpaceItem? selectedSpace;
-  final VoidCallback onTap;
+  final VoidCallback onShareTap;
+  final bool isPosting;
+  final VoidCallback onPost;
 
   @override
   Widget build(BuildContext context) {
     final isSelected = selectedSpace != null;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: isPosting ? null : (isSelected ? onPost : onShareTap),
       child: AnimatedContainer(
         duration: _kSwitchDuration,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           color: isSelected ? AppColors.brand : AppColors.transparent,
           border: isSelected ? null : Border.all(color: AppColors.brand),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedSwitcher(
-              duration: _kSwitchDuration,
-              child: Text(
-                key: ValueKey(selectedSpace?.name),
-                isSelected
-                    ? 'Post to ${selectedSpace!.name}'
-                    : 'SHARE TO A SPACE',
-                style: AppTextStyles.monoMd.copyWith(
-                  color: isSelected ? AppColors.white : AppColors.brand,
+        child: AnimatedSwitcher(
+          duration: _kSwitchDuration,
+          child: isPosting
+              ? SizedBox(
+                  key: const ValueKey('loader'),
+                  height: 20,
+                  child: Center(
+                    child: SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Row(
+                  key: ValueKey(selectedSpace?.name),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      isSelected
+                          ? 'Post to ${selectedSpace!.name}'
+                          : 'SHARE TO A SPACE',
+                      style: AppTextStyles.monoMd.copyWith(
+                        color: isSelected ? AppColors.white : AppColors.brand,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    SvgPicture.asset(
+                      AppIcons.arrow,
+                      height: 16,
+                      width: 16,
+                      colorFilter: ColorFilter.mode(
+                        isSelected ? AppColors.white : AppColors.brand,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            SvgPicture.asset(
-              AppIcons.arrow,
-              height: 16,
-              width: 16,
-              colorFilter: ColorFilter.mode(
-                isSelected ? AppColors.white : AppColors.brand,
-                BlendMode.srcIn,
-              ),
-            ),
-          ],
         ),
       ),
     );

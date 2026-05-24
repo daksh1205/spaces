@@ -90,6 +90,10 @@ flutter:
         - asset: assets/fonts/BricolageGrotesque-Medium.ttf
         - asset: assets/fonts/BricolageGrotesque-SemiBold.ttf
         - asset: assets/fonts/BricolageGrotesque-Bold.ttf
+    - family: Newsreader
+      fonts:
+        - asset: assets/fonts/Newsreader_14pt-LightItalic.ttf
+        - asset: assets/fonts/Newsreader_14pt-MediumItalic.ttf
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

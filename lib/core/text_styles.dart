@@ -27,7 +27,7 @@ class AppTextStyles {
   static const TextStyle monoMd = TextStyle(
     fontFamily: 'JetBrainsMono',
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
   );
 
   // Newsreader

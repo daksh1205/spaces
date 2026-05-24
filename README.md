@@ -21,3 +21,19 @@ A Flutter implementation of the core private-sharing mechanic for **ThisKrit**, 
    ```bash
    flutter run
    ```
+
+## Screenshots
+
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/34e5a0e3-30d6-4dd9-b570-1dce65b738e6" width="45%" />
+  <img src="https://github.com/user-attachments/assets/e0af82e0-a3a4-4fe2-98c9-e19d2371b07b" width="45%" />
+</p>
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/9bb421a6-2a70-4425-b88b-e205c41f0232" width="45%" />
+  <img src="https://github.com/user-attachments/assets/36ad986e-607f-4c37-bc7c-9423f70a16b3" width="45%" />
+</p>
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/4dae6e09-5907-47cf-a9f0-b78002b7f7d8" width="45%" />
+  <img src="https://github.com/user-attachments/assets/a05c3216-20d7-4c07-b33e-9b9de7ccf13e" width="45%" />
+</p>
+

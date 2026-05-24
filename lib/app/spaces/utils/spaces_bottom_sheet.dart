@@ -5,6 +5,7 @@ import '../../../core/color_constants.dart';
 import '../../../core/icon_constants.dart';
 import '../../../core/text_styles.dart';
 import '../models/space_item.dart';
+import 'spaces_strings.dart';
 
 class SpacesBottomSheet extends StatefulWidget {
   const SpacesBottomSheet({
@@ -33,7 +34,6 @@ class _SpacesBottomSheetState extends State<SpacesBottomSheet> {
   }
 
   void _onItemTapDown(int index) => setState(() => _pressedIndex = index);
-
   void _onItemTapCancel() => setState(() => _pressedIndex = null);
 
   void _onItemTap(int index) {
@@ -43,9 +43,7 @@ class _SpacesBottomSheetState extends State<SpacesBottomSheet> {
     });
     widget.onSpaceSelected(index);
     Future.delayed(const Duration(milliseconds: 150), () {
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      if (mounted) Navigator.pop(context);
     });
   }
 
@@ -116,10 +114,13 @@ class _SheetHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Who can see this?', style: AppTextStyles.headingItalic),
+                Text(
+                  SpacesStrings.sheetTitle,
+                  style: AppTextStyles.headingItalic,
+                ),
                 const SizedBox(height: 6),
                 Text(
-                  'Every Thiskrit post is shared with exactly who you want. Nobody more',
+                  SpacesStrings.sheetSubtitle,
                   style: AppTextStyles.body.copyWith(color: AppColors.grey500),
                 ),
               ],
@@ -136,7 +137,7 @@ class _SheetHeader extends StatelessWidget {
                   AppIcons.close,
                   height: 24,
                   width: 24,
-                  colorFilter: ColorFilter.mode(
+                  colorFilter: const ColorFilter.mode(
                     AppColors.grey500,
                     BlendMode.srcIn,
                   ),
@@ -204,7 +205,7 @@ class _SpaceListItem extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                '${space.memberCount} people',
+                SpacesStrings.memberCount(space.memberCount),
                 style: AppTextStyles.monoSm.copyWith(
                   fontSize: 13,
                   color: AppColors.grey500,

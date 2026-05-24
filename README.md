@@ -1,17 +1,23 @@
-# thiskrit_space
+# ThisKrit Spaces - Developer Task
 
-A new Flutter project.
+A Flutter implementation of the core private-sharing mechanic for **ThisKrit**, demonstrating the "Spaces" selection feature.
 
-## Getting Started
+## What it Does
+- **Post Card UI**: Displays a user avatar, username, placeholder image, caption, and reaction icons.
+- **Share to Space**: Tapping the action button opens an elegant modal bottom sheet showing three space options: *Friends*, *Family*, and *Work*.
+- **Dynamic Selection**: Once selected, the chosen space name and member avatar stack display on the post card, updating immediately.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How to Run
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/daksh1205/spaces.git
+   cd thiskrit_space
+   ```
+2. **Install dependencies**:
+   ```bash
+   flutter pub get
+   ```
+3. **Run the application**:
+   ```bash
+   flutter run
+   ```

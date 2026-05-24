@@ -5,6 +5,7 @@ import '../../../core/color_constants.dart';
 import '../../../core/icon_constants.dart';
 import '../../../core/text_styles.dart';
 import '../models/space_item.dart';
+import '../utils/spaces_strings.dart';
 import 'pill_button.dart';
 import 'space_badge.dart';
 
@@ -37,8 +38,8 @@ class PostCard extends StatelessWidget {
         children: [
           _PostCardHeader(selectedSpace: selectedSpace, onShareTap: onShareTap),
           _PostImage(selectedSpace: selectedSpace),
-          _PostActions(),
-          _PostCaption(),
+          const _PostActions(),
+          const _PostCaption(),
           const SizedBox(height: 16),
           _ShareButton(
             selectedSpace: selectedSpace,
@@ -83,14 +84,14 @@ class _PostCardHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('anya.r', style: AppTextStyles.username),
+                Text(SpacesStrings.username, style: AppTextStyles.username),
                 AnimatedSwitcher(
                   duration: _kSwitchDuration,
                   child: Text(
                     key: ValueKey(selectedSpace?.name),
                     selectedSpace != null
-                        ? 'sharing with ${selectedSpace!.memberCount} people'
-                        : 'this afternoon',
+                        ? SpacesStrings.sharingWith(selectedSpace!.memberCount)
+                        : SpacesStrings.defaultTimestamp,
                     style: AppTextStyles.monoSm,
                   ),
                 ),
@@ -110,7 +111,7 @@ class _PostCardHeader extends StatelessWidget {
                   : PillButton(
                       key: const ValueKey('no-space'),
                       child: const Text(
-                        'NO SPACE',
+                        SpacesStrings.noSpace,
                         style: TextStyle(
                           fontSize: 12,
                           fontFamily: 'JetBrainsMono',
@@ -147,8 +148,8 @@ class _PostImage extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Text(
               selectedSpace != null
-                  ? 'VISIBLE TO ${selectedSpace!.name.toUpperCase()}'
-                  : 'NOT YET VISIBLE TO ANYONE',
+                  ? SpacesStrings.visibleTo(selectedSpace!.name)
+                  : SpacesStrings.notVisibleToAnyone,
               style: AppTextStyles.monoSm.copyWith(color: AppColors.white),
             ),
           ),
@@ -186,11 +187,11 @@ class _PostCaption extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: RichText(
         text: TextSpan(
-          text: 'anya.r\t',
+          text: '${SpacesStrings.username}\t',
           style: AppTextStyles.username,
           children: [
             TextSpan(
-              text: 'centuries in the walls. i just passed through',
+              text: SpacesStrings.captionText,
               style: AppTextStyles.body,
             ),
           ],
@@ -254,8 +255,8 @@ class _ShareButton extends StatelessWidget {
                   children: [
                     Text(
                       isSelected
-                          ? 'Post to ${selectedSpace!.name}'
-                          : 'SHARE TO A SPACE',
+                          ? SpacesStrings.postTo(selectedSpace!.name)
+                          : SpacesStrings.shareToSpace,
                       style: AppTextStyles.monoMd.copyWith(
                         color: isSelected ? AppColors.white : AppColors.brand,
                       ),

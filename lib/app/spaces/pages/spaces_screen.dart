@@ -1,10 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../core/app_strings.dart';
 import '../../../core/color_constants.dart';
 import '../../../core/icon_constants.dart';
 import '../../../core/text_styles.dart';
 import '../models/space_item.dart';
+
+import '../utils/spaces_strings.dart';
 import '../utils/spaces_bottom_sheet.dart';
 import '../widgets/pill_button.dart';
 import '../widgets/post_card.dart';
@@ -92,7 +95,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                'Posted to $spaceName',
+                SpacesStrings.postedTo(spaceName),
                 style: AppTextStyles.monoSm.copyWith(color: AppColors.white),
               ),
             ),
@@ -126,7 +129,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              _TopBar(),
+              const _TopBar(),
               const SizedBox(height: 24),
               PostCard(
                 selectedSpace: _selectedSpace,
@@ -152,13 +155,13 @@ class _TopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('ThisKrit', style: AppTextStyles.brandTitle),
+        Text(AppStrings.appName, style: AppTextStyles.brandTitle),
         PillButton(
           child: Row(
             children: [
               SvgPicture.asset(AppIcons.create, height: 12, width: 12),
               const SizedBox(width: 8),
-              Text('NEW POST', style: AppTextStyles.monoSm),
+              Text(AppStrings.newPost, style: AppTextStyles.monoSm),
             ],
           ),
         ),
@@ -179,7 +182,7 @@ class _HelperText extends StatelessWidget {
       child: selectedSpace == null
           ? Text(
               key: const ValueKey('default'),
-              'Posts on ThisKrit are private until you assign them to a space.',
+              SpacesStrings.defaultHelperText,
               textAlign: TextAlign.center,
               style: AppTextStyles.body,
             )
@@ -189,16 +192,14 @@ class _HelperText extends StatelessWidget {
               text: TextSpan(
                 style: AppTextStyles.body,
                 children: [
-                  const TextSpan(
-                    text: 'This post will be visible only to your ',
-                  ),
+                  const TextSpan(text: SpacesStrings.helperTextPrefix),
                   TextSpan(
                     text: selectedSpace!.name,
                     style: AppTextStyles.body.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const TextSpan(text: ' Space.'),
+                  const TextSpan(text: SpacesStrings.helperTextSuffix),
                 ],
               ),
             ),

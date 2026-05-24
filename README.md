@@ -1,4 +1,4 @@
-# ThisKrit Spaces - Developer Task
+# ThisKrit Spaces
 
 A Flutter implementation of the core private-sharing mechanic for **ThisKrit**, demonstrating the "Spaces" selection feature.
 

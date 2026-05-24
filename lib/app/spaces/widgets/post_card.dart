@@ -1,0 +1,239 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../core/color_constants.dart';
+import '../../../core/icon_constants.dart';
+import '../../../core/text_styles.dart';
+import '../models/space_item.dart';
+import 'pill_button.dart';
+import 'space_badge.dart';
+
+const _kSwitchDuration = Duration(milliseconds: 250);
+
+class PostCard extends StatelessWidget {
+  const PostCard({
+    super.key,
+    required this.selectedSpace,
+    required this.onShareTap,
+  });
+
+  final SpaceItem? selectedSpace;
+  final VoidCallback onShareTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.grey100,
+        border: Border.all(color: AppColors.grey200),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _PostCardHeader(selectedSpace: selectedSpace),
+          _PostImage(selectedSpace: selectedSpace),
+          _PostActions(),
+          _PostCaption(),
+          const SizedBox(height: 16),
+          _ShareButton(selectedSpace: selectedSpace, onTap: onShareTap),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+}
+
+class _PostCardHeader extends StatelessWidget {
+  const _PostCardHeader({required this.selectedSpace});
+
+  final SpaceItem? selectedSpace;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(200),
+            child: CachedNetworkImage(
+              height: 44,
+              width: 44,
+              imageUrl:
+                  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1364&auto=format&fit=crop',
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('anya.r', style: AppTextStyles.username),
+                AnimatedSwitcher(
+                  duration: _kSwitchDuration,
+                  child: Text(
+                    key: ValueKey(selectedSpace?.name),
+                    selectedSpace != null
+                        ? 'sharing with ${selectedSpace!.memberCount} people'
+                        : 'this afternoon',
+                    style: AppTextStyles.monoSm,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          AnimatedSwitcher(
+            duration: _kSwitchDuration,
+            child: selectedSpace != null
+                ? SpaceBadge(
+                    key: ValueKey(selectedSpace!.name),
+                    spaceName: selectedSpace!.name,
+                    avatarSeeds: selectedSpace!.avatarSeeds,
+                  )
+                : PillButton(
+                    key: const ValueKey('no-space'),
+                    child: const Text(
+                      'NO SPACE',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'JetBrainsMono',
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PostImage extends StatelessWidget {
+  const _PostImage({required this.selectedSpace});
+
+  final SpaceItem? selectedSpace;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CachedNetworkImage(
+          imageUrl:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxrZjhZ2WGE1zOfv2ikZR45MpfBzT5E-lrzg&s',
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              selectedSpace != null
+                  ? 'VISIBLE TO ${selectedSpace!.name.toUpperCase()}'
+                  : 'NOT YET VISIBLE TO ANYONE',
+              style: AppTextStyles.monoSm.copyWith(color: AppColors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PostActions extends StatelessWidget {
+  const _PostActions();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Row(
+        spacing: 8,
+        children: [
+          SvgPicture.asset(AppIcons.heart, height: 24, width: 24),
+          SvgPicture.asset(AppIcons.comment, height: 24, width: 24),
+          SvgPicture.asset(AppIcons.share, height: 24, width: 24),
+        ],
+      ),
+    );
+  }
+}
+
+class _PostCaption extends StatelessWidget {
+  const _PostCaption();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: RichText(
+        text: TextSpan(
+          text: 'anya.r\t',
+          style: AppTextStyles.username,
+          children: [
+            TextSpan(
+              text: 'centuries in the walls. i just passed through',
+              style: AppTextStyles.body,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShareButton extends StatelessWidget {
+  const _ShareButton({required this.selectedSpace, required this.onTap});
+
+  final SpaceItem? selectedSpace;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = selectedSpace != null;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: _kSwitchDuration,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: isSelected ? AppColors.brand : AppColors.transparent,
+          border: isSelected ? null : Border.all(color: AppColors.brand),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedSwitcher(
+              duration: _kSwitchDuration,
+              child: Text(
+                key: ValueKey(selectedSpace?.name),
+                isSelected
+                    ? 'Post to ${selectedSpace!.name}'
+                    : 'SHARE TO A SPACE',
+                style: AppTextStyles.monoMd.copyWith(
+                  color: isSelected ? AppColors.white : AppColors.brand,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            SvgPicture.asset(
+              AppIcons.arrow,
+              height: 16,
+              width: 16,
+              colorFilter: ColorFilter.mode(
+                isSelected ? AppColors.white : AppColors.brand,
+                BlendMode.srcIn,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

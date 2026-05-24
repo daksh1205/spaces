@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  AppColors._();
+
+  static const Color transparent = Colors.transparent;
+
+  static const Color brand = Color(0xFF75C0C5);
+  static const Color brandSubtle = Color(0x1A75C0C5); 
+
+  // Border
+  static const Color border = Color(0xFF383D3F);
+
   // Gray Scale
   static const Color grey600 = Color(0xFF262626);
   static const Color grey500 = Color(0xFF939596);
